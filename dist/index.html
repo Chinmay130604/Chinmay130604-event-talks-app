@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event Schedule</title>
+    <style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#category-search {
+    padding: 8px;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#schedule-container {
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.talk-card, .break-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #007bff;
+}
+
+.break-card {
+    background-color: #e9ecef;
+    border-left: 5px solid #6c757d;
+}
+
+.talk-card h2, .break-card h2 {
+    margin-top: 0;
+    color: #0056b3;
+}
+
+.break-card h2 {
+    color: #495057;
+}
+
+.talk-card p, .break-card p {
+    margin-bottom: 5px;
+}
+
+.talk-card .speakers, .talk-card .category {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.talk-card .category span {
+    display: inline-block;
+    background-color: #e0f7fa;
+    color: #007bff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.talk-card.hidden {
+    display: none;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>1-Day Tech Talks Event</h1>
+        <input type="text" id="category-search" placeholder="Search by category...">
+    </header>
+    <main id="schedule-container">
+        <!-- Schedule will be dynamically loaded here -->
+    </main>
+
+    <script>document.addEventListener('DOMContentLoaded', () => {
+    const schedule = window.talkSchedule; // Data injected from the Node.js script
+    const scheduleContainer = document.getElementById('schedule-container');
+    const searchInput = document.getElementById('category-search');
+
+    function renderSchedule(filterCategory = '') {
+        scheduleContainer.innerHTML = ''; // Clear existing schedule
+
+        const filteredSchedule = schedule.filter(item => {
+            if (!filterCategory) return true; // Show all if no filter
+            if (!item.category || item.category.length === 0) return false; // Breaks have no category
+            return item.category.some(cat =>
+                cat.toLowerCase().includes(filterCategory.toLowerCase())
+            );
+        });
+
+        filteredSchedule.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add(item.id.includes('transition') || item.id.includes('lunch') ? 'break-card' : 'talk-card');
+            
+            let speakersHtml = '';
+            if (item.speakers && item.speakers.length > 0) {
+                speakersHtml = `<p class="speakers"><strong>Speaker(s):</strong> ${item.speakers.join(', ')}</p>`;
+            }
+
+            let categoryHtml = '';
+            if (item.category && item.category.length > 0) {
+                categoryHtml = `<p class="category"><strong>Category:</strong> ${item.category.map(cat => `<span>${cat}</span>`).join('')}</p>`;
+            }
+
+            card.innerHTML = `
+                <h2>${item.time} - ${item.title}</h2>
+                ${speakersHtml}
+                ${categoryHtml}
+                <p>${item.description}</p>
+            `;
+            scheduleContainer.appendChild(card);
+        });
+    }
+
+    // Initial render
+    renderSchedule();
+
+    // Search functionality
+    searchInput.addEventListener('input', (event) => {
+        renderSchedule(event.target.value);
+    });
+});
+</script>
+    <script id="schedule-data">window.talkSchedule = [{"id":"talk1","time":"10:00 AM - 11:00 AM","title":"The Future of AI in Software Development","speakers":["Dr. Alice Smith"],"category":["AI","Software Engineering"],"duration":"1 hour","description":"An insightful look into how artificial intelligence is reshaping the landscape of software development, from automated code generation to intelligent debugging assistants."},{"id":"transition1","time":"11:00 AM - 11:10 AM","title":"Transition Break","speakers":[],"category":[],"duration":"10 minutes","description":"Time to grab a coffee, stretch, and get ready for the next session."},{"id":"talk2","time":"11:10 AM - 12:10 PM","title":"Mastering Modern JavaScript Frameworks","speakers":["Bob Johnson","Carol White"],"category":["JavaScript","Web Development","Frameworks"],"duration":"1 hour","description":"A deep dive into the latest features and best practices of popular JavaScript frameworks like React, Vue, and Angular."},{"id":"transition2","time":"12:10 PM - 12:20 PM","title":"Transition Break","speakers":[],"category":[],"duration":"10 minutes","description":"Quick break before the next fascinating talk."},{"id":"talk3","time":"12:20 PM - 01:20 PM","title":"Cloud Native Architectures with Kubernetes","speakers":["David Green"],"category":["Cloud","DevOps","Kubernetes"],"duration":"1 hour","description":"Exploring the principles of cloud-native development and how Kubernetes can be leveraged for scalable and resilient applications."},{"id":"lunch","time":"01:20 PM - 02:20 PM","title":"Lunch Break","speakers":[],"category":[],"duration":"1 hour","description":"Enjoy a delicious lunch and network with fellow attendees!"},{"id":"talk4","time":"02:20 PM - 03:20 PM","title":"Secure Coding Practices for Web Applications","speakers":["Eve Black"],"category":["Security","Web Development"],"duration":"1 hour","description":"Essential techniques and best practices to write secure code and protect your web applications from common vulnerabilities."},{"id":"transition3","time":"03:20 PM - 03:30 PM","title":"Transition Break","speakers":[],"category":[],"duration":"10 minutes","description":"Another short break to recharge."},{"id":"talk5","time":"03:30 PM - 04:30 PM","title":"Data Science with Python: From Zero to Hero","speakers":["Frank White"],"category":["Data Science","Python","Machine Learning"],"duration":"1 hour","description":"A comprehensive introduction to data science workflows using Python, covering data manipulation, analysis, and basic machine learning."},{"id":"transition4","time":"04:30 PM - 04:40 AM","title":"Transition Break","speakers":[],"category":[],"duration":"10 minutes","description":"Final short break before the last talk of the day."},{"id":"talk6","time":"04:40 PM - 05:40 PM","title":"Building Scalable APIs with Node.js and GraphQL","speakers":["Grace Lee","Henry Kim"],"category":["Node.js","API","GraphQL"],"duration":"1 hour","description":"Learn how to design and implement highly scalable and efficient APIs using Node.js and GraphQL."}]}

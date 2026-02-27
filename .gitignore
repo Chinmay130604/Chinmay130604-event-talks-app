@@ -1,0 +1,8 @@
+# Node.js dependencies
+node_modules/
+
+# Generated output directory
+dist/
+
+# Gemini CLI temporary files
+.gemini/

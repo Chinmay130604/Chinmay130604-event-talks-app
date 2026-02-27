@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#category-search {
+    padding: 8px;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#schedule-container {
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.talk-card, .break-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #007bff;
+}
+
+.break-card {
+    background-color: #e9ecef;
+    border-left: 5px solid #6c757d;
+}
+
+.talk-card h2, .break-card h2 {
+    margin-top: 0;
+    color: #0056b3;
+}
+
+.break-card h2 {
+    color: #495057;
+}
+
+.talk-card p, .break-card p {
+    margin-bottom: 5px;
+}
+
+.talk-card .speakers, .talk-card .category {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.talk-card .category span {
+    display: inline-block;
+    background-color: #e0f7fa;
+    color: #007bff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.talk-card.hidden {
+    display: none;
+}
